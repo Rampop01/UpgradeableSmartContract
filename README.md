@@ -1,66 +1,57 @@
-## Foundry
+# ProxyContractImplementation
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+##  Overview
 
-Foundry consists of:
+This repository demonstrates a simplified implementation of the **EIP-1967 Proxy Standard** to enable smart contract upgradability in Solidity.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+##  What is EIP-1967?
 
-## Documentation
+[EIP-1967](https://eips.ethereum.org/EIPS/eip-1967) defines **standard storage slots** for proxy contracts to store implementation addresses without interfering with logic contract storage.
 
-https://book.getfoundry.sh/
+It ensures:
+- No collision between proxy and implementation storage.
+- A consistent method of storing and retrieving the implementation address.
 
-## Usage
+##  Why Proxy Contracts?
 
-### Build
+Smart contracts are immutable by design. Once deployed, their logic cannot be changed. Proxy contracts solve this by:
+- Delegating calls to a separate logic contract.
+- Allowing that logic contract to be upgraded via `upgradeTo`.
 
-```shell
-$ forge build
-```
+##  Folder Structure
 
-### Test
+contracts/
+├── Proxy.sol # EIP-1967 compliant proxy
+├── LogicV1.sol # Original logic
+└── LogicV2.sol # Upgraded logic
 
-```shell
-$ forge test
-```
 
-### Format
+##  Security
 
-```shell
-$ forge fmt
-```
+- Only the owner can upgrade the contract.
+- Uses standard storage slot to prevent conflicts.
 
-### Gas Snapshots
+##  How It Works
 
-```shell
-$ forge snapshot
-```
+1. Deploy LogicV1.
+2. Deploy Proxy with LogicV1's address.
+3. Interact with Proxy using LogicV1's ABI.
+4. Upgrade to LogicV2 with `upgradeTo`.
+5. Proxy now delegates to LogicV2.
 
-### Anvil
+##  References
 
-```shell
-$ anvil
-```
+- [EIP-1967: Proxy Storage Slot Standard](https://eips.ethereum.org/EIPS/eip-1967)
+- [OpenZeppelin Upgrades Guide](https://docs.openzeppelin.com/upgrades/2.3/)
+- [Solidity Docs](https://docs.soliditylang.org/)
 
-### Deploy
+---
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+##  Getting Started
 
-### Cast
+To deploy and test using Hardhat or Remix:
 
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+- Compile and deploy `LogicV1`
+- Deploy `Proxy`, passing the address of `LogicV1`
+- Interact with Proxy using `LogicV1`'s ABI
+- Upgrade using `upgradeTo(address of LogicV2)`
