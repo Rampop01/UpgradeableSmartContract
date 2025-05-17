@@ -31,7 +31,7 @@ contracts/
 - Only the owner can upgrade the contract.
 - Uses standard storage slot to prevent conflicts.
 
-##  How It Works
+## 🛠️ How It Works
 
 1. Deploy LogicV1.
 2. Deploy Proxy with LogicV1's address.
