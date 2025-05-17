@@ -20,10 +20,7 @@ Smart contracts are immutable by design. Once deployed, their logic cannot be ch
 
 ##  Folder Structure
 
-contracts/
-├── Proxy.sol # EIP-1967 compliant proxy
-├── LogicV1.sol # Original logic
-└── LogicV2.sol # Upgraded logic
+<pre> <code> ``` contracts/ ├── Proxy.sol # EIP-1967 compliant proxy ├── LogicV1.sol # Original logic └── LogicV2.sol # Upgraded logic ``` </code> </pre>
 
 
 ##  Security
